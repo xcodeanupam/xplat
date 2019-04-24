@@ -1,0 +1,142 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "xplatemy": {
+      "root": "apps/xplatemy/",
+      "sourceRoot": "apps/xplatemy/src",
+      "projectType": "application",
+      "prefix": "xplatemy",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/xplatemy",
+            "index": "apps/xplatemy/src/index.html",
+            "main": "apps/xplatemy/src/main.ts",
+            "polyfills": "apps/xplatemy/src/polyfills.ts",
+            "tsConfig": "apps/xplatemy/tsconfig.app.json",
+            "assets": [
+              "apps/xplatemy/src/favicon.ico",
+              "apps/xplatemy/src/assets"
+            ],
+            "styles": ["apps/xplatemy/src/styles.scss"],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/xplatemy/src/environments/environment.ts",
+                  "with": "apps/xplatemy/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "xplatemy:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "xplatemy:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "xplatemy:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/xplatemy/tsconfig.app.json",
+              "apps/xplatemy/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/xplatemy/jest.config.js",
+            "tsConfig": "apps/xplatemy/tsconfig.spec.json",
+            "setupFile": "apps/xplatemy/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "xplatemy-e2e": {
+      "root": "apps/xplatemy-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/xplatemy-e2e/cypress.json",
+            "tsConfig": "apps/xplatemy-e2e/tsconfig.e2e.json",
+            "devServerTarget": "xplatemy:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "xplatemy:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/xplatemy-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/schematics"
+  },
+  "schematics": {
+    "@nrwl/schematics:application": {
+      "style": "scss",
+      "framework": "angular"
+    },
+    "@nrwl/schematics:library": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "xplatemy"
+}
