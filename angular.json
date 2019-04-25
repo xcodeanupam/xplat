@@ -26,7 +26,9 @@
               "apps/xplatemy/src/favicon.ico",
               "apps/xplatemy/src/assets"
             ],
-            "styles": ["apps/xplatemy/src/styles.scss"],
+            "styles": [
+              "apps/xplatemy/src/styles.scss"
+            ],
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -81,7 +83,9 @@
               "apps/xplatemy/tsconfig.app.json",
               "apps/xplatemy/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -116,7 +120,229 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/xplatemy-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "libs": {
+      "root": "libs",
+      "sourceRoot": "libs",
+      "projectType": "library",
+      "prefix": "foo",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "testing/test.libs.ts",
+            "tsConfig": "testing/tsconfig.libs.spec.json",
+            "karmaConfig": "testing/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "testing/tsconfig.libs.json",
+              "testing/tsconfig.libs.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "xplat": {
+      "root": "xplat",
+      "sourceRoot": "xplat",
+      "projectType": "library",
+      "prefix": "foo",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "testing/test.xplat.ts",
+            "tsConfig": "testing/tsconfig.xplat.spec.json",
+            "karmaConfig": "testing/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "testing/tsconfig.xplat.json",
+              "testing/tsconfig.xplat.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "web-jay": {
+      "root": "apps/web-jay/",
+      "sourceRoot": "apps/web-jay/src",
+      "projectType": "application",
+      "prefix": "foo",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/web-jay",
+            "index": "apps/web-jay/src/index.html",
+            "main": "apps/web-jay/src/main.ts",
+            "polyfills": "apps/web-jay/src/polyfills.ts",
+            "tsConfig": "apps/web-jay/tsconfig.app.json",
+            "assets": [
+              "apps/web-jay/src/favicon.ico",
+              "apps/web-jay/src/assets"
+            ],
+            "styles": [
+              "xplat/web/scss/_index.scss",
+              "apps/web-jay/src/styles.scss"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/web-jay/src/environments/environment.ts",
+                  "with": "apps/web-jay/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "web-jay:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "web-jay:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "web-jay:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/web-jay/tsconfig.app.json",
+              "apps/web-jay/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/web-jay/jest.config.js",
+            "tsConfig": "apps/web-jay/tsconfig.spec.json",
+            "setupFile": "apps/web-jay/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "web-jay-e2e": {
+      "root": "apps/web-jay-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/web-jay-e2e/cypress.json",
+            "tsConfig": "apps/web-jay-e2e/tsconfig.e2e.json",
+            "devServerTarget": "web-jay:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "web-jay:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/web-jay-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "nativescript-jay": {
+      "root": "apps/nativescript-jay/",
+      "sourceRoot": "apps/nativescript-jay/app",
+      "projectType": "application",
+      "prefix": "foo",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "serve": {
+          "builder": "@nrwl/builders:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "yarn start.nativescript.jay.preview"
+              }
+            ]
+          },
+          "configurations": {
+            "ios": {
+              "commands": [
+                {
+                  "command": "yarn start.nativescript.jay.ios"
+                }
+              ]
+            },
+            "android": {
+              "commands": [
+                {
+                  "command": "yarn start.nativescript.jay.android"
+                }
+              ]
+            }
           }
         }
       }
@@ -127,7 +353,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics"
+    "defaultCollection": "@nstudio/schematics"
   },
   "schematics": {
     "@nrwl/schematics:application": {
